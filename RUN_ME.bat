@@ -9,3 +9,11 @@ echo Installing requirements &^
 pip install -r files\requirements.txt &^
 deactivate
 echo All done
+echo Activating environement
+wenv\Scripts\activate &^
+echo Running script &^
+cd files &^
+python3 launch_local.py &^
+cd .. &^
+echo Deactivating environement &^
+deactivate

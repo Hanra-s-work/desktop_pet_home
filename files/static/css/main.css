@@ -1,1 +1,11 @@
+.hw {
+    color: blue;
+    width: 2em;
+    text-align: center;
+    text-decoration: line-through;
+}
 
+.hw:hover {
+    color: red;
+    text-decoration: none;
+}
