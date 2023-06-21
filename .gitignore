@@ -1,4 +1,6 @@
+# Ignored folders
 wenv/**
 lenv/**
 menv/**
 venv/**
+.vscode/**
