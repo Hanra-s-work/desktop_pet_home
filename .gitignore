@@ -1,6 +1,15 @@
 # Ignored folders
-wenv/**
-lenv/**
-menv/**
-venv/**
-.vscode/**
+**/wenv/**
+**/lenv/**
+**/menv/**
+**/venv/**
+**/.venv/**
+**/.vscode/**
+**/node_modules/**
+
+# Ignored files
+package.json
+package-lock.json
+
+# Tailwind dependencies
+--prefix
