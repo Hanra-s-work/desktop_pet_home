@@ -33,9 +33,13 @@ jobs:
           node-version: '16'
       - name: Build Tailwind CSS
         run: |
-          # Assuming the tailwind.css file is located in ./files/static/vendor/bootstrap/
-          npm install --prefix ./files/static/vendor/bootstrap/
-          npx tailwindcss build ./files/static/vendor/bootstrap/tailwind.css -o static/vendor/bootstrap/output.css
+          npm init -y --prefix ./files/static/vendor/bootstrap/
+          npm install tailwindcss --prefix ./files/static/vendor/bootstrap/
+          npx tailwindcss init --full --prefix ./files/static/vendor/bootstrap/
+          npx tailwindcss build --config ./files/static/vendor/bootstrap/tailwind.config.js --output ./files/static/vendor/bootstrap/tailwind.css --prefix ./files/static/vendor/bootstrap/
+      - name: Display the content of files/static/vendor/bootstrap
+        run: |
+          ls -R ./files/static/vendor/bootstrap/
       - name: Build Jinja Site
         run: |
           # Replace the command with your build script or static site generator
