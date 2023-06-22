@@ -4,9 +4,11 @@ on:
   push:
     branches-ignore:
       - "ga-ignore-*"
+      - "gh-*"
   pull_request:
     branches-ignore:
       - "ga-ignore-*"
+      - "gh-*"
 
 env:
   PYTHONUNBUFFERED: 1
@@ -45,8 +47,7 @@ jobs:
           ls -R ./files/static/vendor/bootstrap/
       - name: Update the root path
         run: |
-          echo "repository info $(echo '${{github.event.repository.full_name}}' | cut -d '/' -f 1)"
-          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/$(echo '${{github.event.repository.full_name}}' | cut -d '/' -f 1).github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
+          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/hanra-s-work.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
           echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
       - name: Copy static files to output directory
         run: |
