@@ -42,7 +42,7 @@ jobs:
           ls -R ./files/static/vendor/bootstrap/
       - name: Update the root path
         run: |
-          echo "repository info ${{GITHUB_REPOSITORY_OWNER}}"
+          echo "repository info ${{github.event.repository.full_name}}"
           sed -i 's/{% set home="\/" %}/{% set home="https:\/\/${{ github.repository.owner }}.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
           echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
       - name: Copy static files to output directory
