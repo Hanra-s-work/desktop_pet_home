@@ -1,5 +1,5 @@
 module.exports = {
-    purge: [],
+    content: [],
     darkMode: true, // or 'media' or 'class'
     theme: {
         extend: {},
