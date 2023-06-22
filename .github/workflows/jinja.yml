@@ -10,7 +10,7 @@ on:
 
 env:
   PYTHONUNBUFFERED: 1
-  USER_NAME: "$(echo ${{github.event.repository.full_name}} | cut -d '/' -f 1)"
+  USER_NAME: $(echo ${{github.event.repository.full_name}} | cut -d '/' -f 1)
 
 jobs:
   build:
