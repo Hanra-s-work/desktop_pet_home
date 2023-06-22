@@ -47,7 +47,9 @@ jobs:
       - name: Build Jinja Site
         run: |
           # Replace the command with your build script or static site generator
+          cd files
           python ./files/build.py  # Assuming you have a custom build script
+          cd ..
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
