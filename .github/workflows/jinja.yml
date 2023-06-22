@@ -15,7 +15,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9, 3.11]
+        python-version: [3.9, 3.11]
 
     steps:
       - uses: actions/checkout@v3
@@ -42,8 +42,8 @@ jobs:
           ls -R ./files/static/vendor/bootstrap/
       - name: Update the root path
         run: |
-          echo "repository info ${{ github.event.repository.owner}}"
-          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/${{ github.event.repository.owner }}.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
+          echo "repository info ${{ github.repository.owner }}"
+          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/${{ github.repository.owner }}.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
           echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
       - name: Copy static files to output directory
         run: |
