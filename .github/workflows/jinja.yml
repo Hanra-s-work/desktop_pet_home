@@ -48,6 +48,9 @@ jobs:
         run: |
           mkdir -p ./output
           cp -r ./files/static ./output
+      - name: Copy favicon to the source of the folder
+        run: |
+          cp ./favicon.ico ./output
       - name: Build Jinja Site
         run: |
           # Replace the command with your build script or static site generator
@@ -55,6 +58,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN_ORG }}
           publish_branch: gh-pages  # Branch to deploy the static files
           publish_dir: ./output  # Directory containing the generated static files
