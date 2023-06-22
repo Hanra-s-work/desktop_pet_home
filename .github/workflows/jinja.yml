@@ -16,8 +16,6 @@ on:
 env:
   PYTHONUNBUFFERED: 1
   WEB_COMPILATION_FOLDER: "./output"
-  name: github-pages
-  url: ${{ steps.deployment.outputs.page_url }}
 
 
 # setting up repository to allow push
@@ -69,7 +67,7 @@ jobs:
         run: |
           sed -i 's/{% set home="\/" %}/{% set home="https:\/\/hanra-s-work.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
           echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
-          - name: Copy static files to output directory
+      - name: Copy static files to output directory
         run: |
           mkdir -p ${{ env.WEB_COMPILATION_FOLDER }}
           cp -r ./files/static ${{ env.WEB_COMPILATION_FOLDER }}
@@ -81,6 +79,13 @@ jobs:
           # Replace the command with your build script or static site generator
           # Assuming you have a custom build script
           python ./files/build.py  "${{ env.WEB_COMPILATION_FOLDER }}"
+  depploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
