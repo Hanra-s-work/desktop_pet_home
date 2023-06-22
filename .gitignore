@@ -9,7 +9,7 @@
 **/output/**
 
 # Ignored extensions
-*.html
+# *.html
 
 # Ignored files
 package.json
