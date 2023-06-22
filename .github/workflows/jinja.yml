@@ -1,4 +1,4 @@
-name: Jinja CI
+name: Jinja CI/CD
 
 on:
   push:
@@ -79,12 +79,18 @@ jobs:
           # Replace the command with your build script or static site generator
           # Assuming you have a custom build script
           python ./files/build.py  "${{ env.WEB_COMPILATION_FOLDER }}"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: compiled-files
+          path: ${{ env.WEB_COMPILATION_FOLDER }}
   depploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    if: success()
     steps:
       - name: Checkout
         uses: actions/checkout@v3
