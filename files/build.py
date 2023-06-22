@@ -12,11 +12,14 @@ def create_paths_if_not_exist(path: str = f"{os.getcwd()}/output") -> None:
 
 
 if __name__ == '__main__':
+    output_folder = "output"
+    if len(sys.argv) > 1:
+        output_folder = sys.argv[1]
     print(f"cwd = {os.getcwd()}")
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     with app.app_context():
         rendered_content = render_template('index.jinja')
-        src_path = os.path.join(os.getcwd(), "output")
+        src_path = os.path.join(os.getcwd(), output_folder)
         create_paths_if_not_exist(src_path)
         # Save the rendered content to an HTML file
         output_file = os.path.join(src_path, 'index.html')

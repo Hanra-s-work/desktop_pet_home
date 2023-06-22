@@ -9,9 +9,29 @@ on:
     branches-ignore:
       - "ga-ignore-*"
       - "gh-*"
+  # setting up repository to allow push
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 env:
   PYTHONUNBUFFERED: 1
+  WEB_COMPILATION_FOLDER: "./output"
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
+
+
+# setting up repository to allow push
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -49,20 +69,31 @@ jobs:
         run: |
           sed -i 's/{% set home="\/" %}/{% set home="https:\/\/hanra-s-work.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
           echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
-      - name: Copy static files to output directory
+          - name: Copy static files to output directory
         run: |
-          mkdir -p ./output
-          cp -r ./files/static ./output
+          mkdir -p ${{ env.WEB_COMPILATION_FOLDER }}
+          cp -r ./files/static ${{ env.WEB_COMPILATION_FOLDER }}
       - name: Copy favicon to the source of the folder
         run: |
-          cp ./favicon.ico ./output
+          cp ./favicon.ico ${{ env.WEB_COMPILATION_FOLDER }}
       - name: Build Jinja Site
         run: |
           # Replace the command with your build script or static site generator
-          python ./files/build.py  # Assuming you have a custom build script
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+          # Assuming you have a custom build script
+          python ./files/build.py  "${{ env.WEB_COMPILATION_FOLDER }}"
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages  # Branch to deploy the static files
-          publish_dir: ./output  # Directory containing the generated static files
+          # Upload the w repository
+          path: '${{ env.WEB_COMPILATION_FOLDER }}'
+      - name: Deploy to Github pages attempt 2
+        id: deployment
+        uses: actions/deploy-pages@v2
+      # - name: Deploy to GitHub Pages
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_branch: gh-pages  # Branch to deploy the static files
+      #     publish_dir: ./output  # Directory containing the generated static files
