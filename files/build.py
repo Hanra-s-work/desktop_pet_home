@@ -10,4 +10,7 @@ def index():
 
 if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(debug=True)
+    with app.app_context():
+        rendered_content = render_template('index.jinja')
+        # Save the rendered_content to the appropriate location
+        # Or perform other necessary actions with the generated content
