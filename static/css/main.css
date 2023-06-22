@@ -1,0 +1,10 @@
+.hw {
+    color: blue;
+    text-align: center;
+    text-decoration: line-through;
+}
+
+.hw:hover {
+    color: red;
+    text-decoration: none;
+}
