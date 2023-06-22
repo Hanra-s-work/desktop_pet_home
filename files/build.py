@@ -1,4 +1,7 @@
 from flask import Flask, render_template
+import os
+print(f"os.listdir = {os.listdir()}")
+print(f"cwd = {os.getcwd()}")
 
 app = Flask(__name__)
 
