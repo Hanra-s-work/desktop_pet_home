@@ -9,5 +9,8 @@ if __name__ == '__main__':
     app.config['TEMPLATES_AUTO_RELOAD'] = True
     with app.app_context():
         rendered_content = render_template('index.jinja')
-        # Save the rendered_content to the appropriate location
-        # Or perform other necessary actions with the generated content
+
+        # Save the rendered content to an HTML file
+        output_file = os.path.join(os.getcwd(), 'index.html')
+        with open(output_file, 'w', encoding="utf-8") as file:
+            file.write(rendered_content)
