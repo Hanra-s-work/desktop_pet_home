@@ -1,6 +1,7 @@
 {% extends 'base.jinja' %}
 
-{% set home="https://hanra-s-work.github.io/desktop_pet_home/" %}
+{# {% set home="https://hanra-s-work.github.io/desktop_pet_home/" %} #}
+{% set home="/" %}
 
 {% block content %}
 <h1 class="hw">Hello World!</h1>
@@ -11,6 +12,36 @@
 {% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ home }}/files/static/css/main.css">
-<link rel="stylesheet" href="{{ home }}/files/static/vendor/bootstrap/tailwind.css">
+<link rel="stylesheet" href="{{ home }}static/css/main.css">
+<link rel="stylesheet" href="{{ home }}static/vendor/bootstrap/tailwind.css">
+{% endblock %}
+
+{% block meta_data %}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="Index" content="This is top of the server home." />
+<meta name="Language" CONTENT="en,fr" />
+<meta name="robots" content="index,follow,max-image-preview:standard" />
+<meta name="copyright" content="&copy; Henry Letellier 2023" />
+<meta name="publisher" content="Henry Letellier" />
+<meta name="googlebot" content="index,follow,snippet" />
+<meta name="google" content="translate,sitelinkssearchbox" />
+<meta name="google-site-verification" content="" />
+<meta http-equiv=" pragma" content="cache" />
+<meta http-equiv="Cache-control" content="public" />
+{% endblock %}
+
+{% block icon %}
+<link rel="manifest" href="{{ home }}img/icon/site.webmanifest">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ home }}img/icon/favicon_16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ home }}img/icon/favicon_32x32.png"> <!--//all-->
+<link rel="icon" type="image/svg+xml" href="{{ home }}img/icon/favicon_32x32.svg" /> <!--//Chrome extra requirements-->
+<link rel="shortcut icon" type="image/x-icon" href="{{ home }}img/icon/favicon_16x16.ico" /> <!--//IE-->
+<link rel="apple-touch-icon" sizes="180x180" href="{{ home }}img/icon/apple_touch_icon.png">
+<link rel="alternate icon" sizes="16x16" href="{{ home }}img/icon/favicon_16x16.ico" />
+<link rel="alternate icon" sizes="32x32" href="{{ home }}img/icon/favicon_32x32.ico" />
+<link rel="alternate icon" sizes="48x48" href="{{ home }}img/icon/favicon_48x48.ico" />
+<link rel="alternate icon" sizes="64x64" href="{{ home }}img/icon/favicon_64x64.ico" />
+<link rel="alternate icon" sizes="128x128" href="{{ home }}img/icon/favicon_128x128.ico" />
+<link rel="alternate icon" sizes="256x256" href="{{ home }}img/icon/favicon_256x256.ico" />
 {% endblock %}

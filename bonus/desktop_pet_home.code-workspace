@@ -2,9 +2,26 @@
 	"folders": [
 		{
 			"path": ".."
-		}
+		},
 	],
 	"settings": {
+		"files.autoSave": "afterDelay",
+		"files.autoSaveDelay": 1000,
+		"files.encoding": "utf8",
+		"files.eol": "\n",
+		"files.enableTrash": true,
+		"files.trimTrailingWhitespace": true,
+		"files.restoreUndoStack": true,
+		"files.trimFinalNewlines": true,
+		"files.associations": {
+			"*.uxf": "umlet",
+			"*.todo": "todo-language",
+			"*.blink": "vscode-blink-mind",
+			"*.blinkmind": "vscode-blink-mind"
+		},
+		"[umlet]": {
+			"files.autoGuessEncoding": true,
+		},
 		"cSpell.enabledLanguageIds": [
 			"asciidoc",
 			"c",

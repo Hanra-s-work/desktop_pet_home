@@ -2,15 +2,19 @@
 <html>
 
     <head>
+        {% block meta_data %}{% endblock %}
         <title>My Jinja Website</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        {% block icon %}{% endblock %}
+        {% block stylesheets %}{% endblock %}
     </head>
 
     <body>
         <div class="container">
             {% block content %}{% endblock %}
+            <p id="input_test"></p>
         </div>
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <script type="text/JavaScript">my_test()</script>
     </body>
 
 </html>

@@ -40,6 +40,10 @@ jobs:
       - name: Display the content of files/static/vendor/bootstrap
         run: |
           ls -R ./files/static/vendor/bootstrap/
+      - name: Update the root path
+        run: |
+          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/hanra-s-work.github.io\/desktop_pet_home\/" %}/' ./files/templates/index.jinja
+          echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
       - name: Build Jinja Site
         run: |
           # Replace the command with your build script or static site generator
