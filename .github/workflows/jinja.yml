@@ -33,7 +33,6 @@ jobs:
           node-version: '16'
       - name: Build Tailwind CSS
         run: |
-          rm -f ./files/static/vendor/bootstrap/tailwind.config.js
           npm init -y --prefix ./files/static/vendor/bootstrap/
           npm install tailwindcss@latest --prefix ./files/static/vendor/bootstrap/
           npx tailwindcss init --full --prefix ./files/static/vendor/bootstrap/
