@@ -6,6 +6,7 @@
 **/.venv/**
 **/.vscode/**
 **/node_modules/**
+**/output/**
 
 # Ignored extensions
 *.html
