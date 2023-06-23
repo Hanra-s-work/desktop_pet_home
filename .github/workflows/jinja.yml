@@ -109,11 +109,6 @@ jobs:
           ls -R ${{ env.WEB_COMPILATION_FOLDER }}
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          # Upload the w repository
-          path: '${{ env.WEB_COMPILATION_FOLDER }}'
       - name: Deploy to Github pages attempt 2
         id: deployment
         uses: actions/deploy-pages@v2
