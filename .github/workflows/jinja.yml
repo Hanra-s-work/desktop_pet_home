@@ -68,7 +68,7 @@ jobs:
           ls -R ./files/static/vendor/bootstrap/
       - name: Update the root path
         run: |
-          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/hanra-s-work.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/index.jinja
+          sed -i 's/{% set home="\/" %}/{% set home="https:\/\/hanra-s-work.github.io\/${{ github.event.repository.name }}\/" %}/' ./files/templates/global_info.jinja
           echo "contents of ./files/templates/index.jinja:\n $(cat ./files/templates/index.jinja)"
       - name: Copy static files to output directory
         run: |
