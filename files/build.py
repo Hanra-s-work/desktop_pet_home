@@ -1,68 +1,134 @@
 import os
-from flask import Flask
+import sys
 from jinja2 import Environment, FileSystemLoader
 
-app = Flask(__name__)
+SUCCESS = 0
+ERROR = 84
+OUTPUT_FOLDER = "./output"
+INPUT_FOLDER = "./files/templates"
 
 
-def create_if_not_exists(folder_path: str) -> None:
-    """Creates a folder at the given path only when it does not exist"""
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path, exist_ok=True)
+def get_output_folder(args: list, output_folder: str = OUTPUT_FOLDER) -> str:
+    """ Get the output folder if provided """
+    if len(args) > 1:
+        return args[1]
+    return output_folder
 
 
-def configure_template_environment(template_folder):
-    template_loader = FileSystemLoader(template_folder)
-    template_env = Environment(loader=template_loader)
-    template_env.trim_blocks = True  # Add this line to remove unnecessary whitespace
-    app.jinja_env = template_env
+def get_input_folder(args: list, input_folder: str = INPUT_FOLDER) -> str:
+    """ Get the input folder if provided """
+    if len(args) > 2:
+        return args[2]
+    return input_folder
 
 
-def render_template(template_file):
-    try:
-        template = app.jinja_env.get_template(template_file)
-        rendered_content = template.render()
-        return rendered_content
-    except Exception as e:
-        print(f"Failed to render template '{template_file}': {e}")
-        return None
+def create_paths_if_not_exist(path: str = OUTPUT_FOLDER) -> None:
+    """ Create the output path if it does not exist """
+    if os.path.exists(path) == False:
+        os.makedirs(path, exist_ok=True)
 
 
-def render_templates(input_folder, output_folder):
-    configure_template_environment(input_folder)
-
-    for root, dirs, files in os.walk(input_folder):
-        # Render pages in the current directory
-        for file in files:
-            if file == 'index.jinja':
-                template_file = os.path.relpath(
-                    os.path.join(root, file), input_folder)
-                print(f"Rendering template: {template_file}")
-                rendered_content = render_template(template_file)
-                if rendered_content:
-                    output_path = os.path.join(
-                        output_folder, template_file.replace('.jinja', '.html'))
-                    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-                    with open(output_path, 'w') as f:
-                        f.write(rendered_content)
-                    print(
-                        f"Template '{template_file}' rendered and saved to '{output_path}'")
-
-        # Move HTML files to output folder while preserving directory structure
-        for dir in dirs:
-            dir_path = os.path.join(root, dir)
-            output_dir = os.path.join(
-                output_folder, os.path.relpath(dir_path, input_folder))
-            create_if_not_exists(output_dir)
-            for file in os.listdir(dir_path):
-                file_path = os.path.join(dir_path, file)
-                if file.endswith('.html'):
-                    output_file = os.path.join(output_dir, file)
-                    os.rename(file_path, output_file)
-                    print(f"Moved file '{file_path}' to '{output_file}'")
+def get_all_folders_for_the_environement(src: str) -> list[str]:
+    """ Get all the folders for the environment """
+    folders = [src]
+    content = os.listdir(src)
+    for item in content:
+        my_path = os.path.join(src, item)
+        if os.path.isdir(my_path):
+            folders.append(my_path)
+            folders.extend(get_all_folders_for_the_environement(my_path))
+    return folders
 
 
-if __name__ == '__main__':
-    input_folder = 'files/templates'
-    output_folder = 'output'
-    render_templates(input_folder, output_folder)
+def get_all_pages(src: str, rule: str) -> list[str]:
+    """ Get all the Jinja webpages to be converted """
+    pages = []
+    content = os.listdir(src)
+    for item in content:
+        my_path = os.path.join(src, item)
+        if os.path.isfile(my_path) and rule in item:
+            pages.append(to_linux(my_path))
+        if os.path.isdir(my_path):
+            pages.extend(get_all_pages(my_path, rule))
+    return pages
+
+
+def render_page(file_name: str, render_env: Environment, output_name: str) -> int:
+    """ Render a jinja page """
+    # try:
+    render_template = render_env.get_template(file_name)
+    rendered_output = render_template.render()
+    create_paths_if_not_exist(os.path.dirname(output_name))
+    file = open(output_name, "w", encoding="utf-8")
+    file.write(rendered_output)
+    file.close()
+    print(f"Conversion = {rendered_output}")
+    return SUCCESS
+    # except Exception as err:
+    #     print(f"Error: {err}", end=" ")
+    # return ERROR
+
+
+def create_folders_of_directory(my_pages: list[str]) -> None:
+    """ Create the folders of the directory """
+    for page in my_pages:
+        output = page.split('/')
+        output[0] = output[0].replace(INPUT_FOLDER, "")
+        res = OUTPUT_FOLDER
+        for i in output:
+            if len(i) > 0:
+                res += f"/{i}"
+        create_paths_if_not_exist(res)
+
+
+def to_linux(path: str) -> str:
+    """ Convert the path to a linux path """
+    return path.replace("\\", "/")
+
+
+def main(input_folder, output_folder):
+    """ The main function of the program """
+    # Get the output and input folder
+    output_folder = to_linux(get_output_folder(sys.argv))
+    input_folder = to_linux(get_input_folder(sys.argv))
+    print(f"INPUT_FOLDER = {input_folder}\nOUTPUT_FOLDER = {output_folder}")
+    print("Gathering folders for the environement")
+    folds = get_all_folders_for_the_environement(input_folder)
+    print(f"Found folders = {folds}")
+    env = Environment(
+        loader=FileSystemLoader(
+            folds,
+            encoding="utf-8",
+            followlinks=True
+        )
+    )
+    # Create the output folder if it does not exist
+    print(f"Checking folder presence = '{output_folder}'")
+    create_paths_if_not_exist(output_folder)
+
+    # get all the website pages
+    pages = get_all_pages(input_folder, "index.j")
+    print(f"Found pages = {pages}")
+
+    # Render all the pages
+    print("Rendering pages")
+    for page in pages:
+        output = page
+        if '\\' in page:
+            output = output.replace("\\", "/")
+        output = output.split('/')
+        output[0] = output[0].replace(input_folder, "")
+        res = output_folder
+        for i in output:
+            if len(i) > 0:
+                res += f"/{i}"
+        print(f"Rendering page {page} to {res}...", end="")
+        status = render_page(page, env, res)
+        if status == SUCCESS:
+            print("[OK]")
+        else:
+            print("[KO]")
+
+
+if __name__ == "__main__":
+    main(INPUT_FOLDER, OUTPUT_FOLDER)
