@@ -94,13 +94,17 @@ def main(input_folder, output_folder):
     print(f"INPUT_FOLDER = {input_folder}\nOUTPUT_FOLDER = {output_folder}")
     print("Gathering folders for the environement")
     folds = get_all_folders_for_the_environement(input_folder)
+    # folds = [input_folder]
     print(f"Found folders = {folds}")
     env = Environment(
         loader=FileSystemLoader(
             folds,
             encoding="utf-8",
             followlinks=True
-        )
+        ),
+        autoescape=True,  # Enable autoescaping of variables
+        trim_blocks=True,  # Trim whitespace from blocks
+        lstrip_blocks=True  # Strip leading whitespace from blocks
     )
     # Create the output folder if it does not exist
     print(f"Checking folder presence = '{output_folder}'")
